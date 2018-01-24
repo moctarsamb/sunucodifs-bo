@@ -110,7 +110,7 @@
 
     &:hover {
       text-decoration: none;
-      color: $warning;
+      color: $primary;
     }
   }
 
@@ -199,4 +199,7 @@
   .profile-toggle-link {
     cursor: pointer;
   }
+  .ion-stats-bars{
+    content: "\f2b5";
+}
 }

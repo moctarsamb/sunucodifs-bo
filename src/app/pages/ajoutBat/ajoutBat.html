@@ -1,0 +1,57 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title class="centerme" >Ajouter Un Batiment</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="container">
+    <form [formGroup]="batimentForm" >
+      <mat-form-field class="large">
+        <input type="text" matInput placeholder="Entrez le nom du batiment" formControlName="nomBatiment" >
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="Entrez le nombre d'etages" formControlName="nbEtages" >
+      </mat-form-field>
+      <button mat-button class="centerme" type="submit" (click)="ajoutBat()" disabled="{{!batimentForm.valid}}" > Envoyer</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+<br>
+<mat-card *ngIf="batdone">
+  <mat-card-header>
+  <mat-card-title> Ajouter les etages </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div *ngFor="let etage of allEtages; index as i" >
+      <h5> Etage {{i}} <i class="material-icons">check_circle</i> </h5>
+        <mat-form-field class="large">
+          <input type="text" matInput placeholder="Entrer le nombre de couloirs" [(ngModel)]="etage.nbCouloirs" >
+        </mat-form-field>
+      <button mat-button (click)="ajoutEtage(i,etage)" > Creer</button>
+            <div *ngFor="let col of allCouloirs[i]; index as j">
+              <h6>Couloir {{j+1}}</h6>
+              <mat-form-field class="">
+                <input type="text" matInput placeholder="Entrer le nom de couloir" [(ngModel)]="col.designation" >
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select  placeholder="Choisissez le Sexe">
+                  <mat-option value="M"> M </mat-option>
+                  <mat-option value="F"> F </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <input placeholder="Debut Couloir" matInput *ngIf="i>0 && j==0" [value]="parse(this.allCouloirs[i-1][this.allEtages[i-1].nbCouloirs - 1].fin) + 1" [(ngModel)]="col.debut" disabled >
+                <input placeholder="Debut Couloir" matInput *ngIf="j>0" [value]="parse(this.allCouloirs[i][j-1].fin) + 1" [(ngModel)]="col.debut" disabled >
+                <input type="text" matInput placeholder="Debut Couloir"  *ngIf="i==0 && j==0" value="0" disabled [(ngModel)]="col.debut">
+              </mat-form-field>
+              <mat-form-field>
+                <input type="text" matInput placeholder="Fin de Couloir" [(ngModel)]="col.fin" >
+              </mat-form-field>
+            </div>
+      <button mat-button (click)="ajoutCouloir(i)" >Valider</button>
+
+      <br>
+      <mat-divider ></mat-divider>
+      <br>
+      <br>
+    </div>
+  </mat-card-content>
+  </mat-card>

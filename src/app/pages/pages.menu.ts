@@ -7,7 +7,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Dashboard',
-            icon: 'ion-android-home',
+            icon: 'ion-ios-home',
             selected: false,
             expanded: false,
             order: 0,
@@ -19,7 +19,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Gestion Batiments',
-            icon: 'ion-person',
+            icon: 'ion-ios-list',
             selected: false,
             expanded: false,
             order: 0,
@@ -51,8 +51,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: ' Statistiques',
-            icon: 'ion-stats-bars',
-            selected: false,
+            icon: 'ion-ios-bars',
             expanded: false,
             order: 0,
           },
@@ -64,7 +63,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Deconnexion',
-            icon: 'ion-log-out',
+            icon: 'ion-ios-log-out',
             selected: false,
             expanded: false,
             order: 0,
