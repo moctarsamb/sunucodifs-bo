@@ -2,9 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 import { Router } from '@angular/router';
-import {HttpClient, HttpResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpResponse, HttpHeaders, HttpRequest} from '@angular/common/http';
 import {Batiment} from '../models/batiment';
-import {forEach} from '@angular/router/src/utils/collection';
+import {api} from '../api';
+const headers: HttpHeaders = new HttpHeaders({
+  'accept': 'application/json',
+  'content-type': 'application/json'
+});
+const Options =  new HttpResponse({ headers: headers });
 @Component({
     templateUrl: 'ajoutBat.html',
     styleUrls: ['ajoutBat.scss'],
@@ -20,8 +25,10 @@ export class AjoutBatComponent implements OnInit {
     ngOnInit() {
 
     }
+    private api =  'http://localhost:3000/api/' ;
     public showCou = false ;
     private batDone = false;
+    public notlinear = true ;
     private batID = '';
     private etaId: Array<any> = [];
     private couId: Array<any> = [];
@@ -59,68 +66,81 @@ export class AjoutBatComponent implements OnInit {
     // Methodes
       public ajoutBat() {
       if (this.batimentForm.valid) {
-        console.log(this.batimentForm.value);
-        for (let i = 0; i < this.batimentForm.value.nbEtages; i++) {
-          const obj = {
-            'numEtage': i,
-            'nbCouloirs': 0,
-            'code': '',
-            'batimentId': this.batID,
-            'done': false,
-          };
-          const nobj2: Array<any> = [];
-          this.allEtages.push(obj);
-          this.allCouloirs.push(nobj2);
-        }
-        this.batDone = true;
+        this.http.post(this.api + 'batiments', this.batimentForm.value).subscribe(
+          data => {
+            const x: any = data;
+            this.batID = x.id;
+            for (let i = 0; i < this.batimentForm.value.nbEtages; i++) {
+              const obj = {
+                'numEtage': i,
+                'nbCouloirs': 0,
+                'code': '',
+                'batimentId': this.batID,
+                'done': false,
+              };
+              const nobj2: Array<any> = [];
+              this.allEtages.push(obj);
+              this.allCouloirs.push(nobj2);
+            }
+            this.batDone = true;
+          },
+          error => console.error(error)
+        );
       }
     }
     public ajoutEtage(index, etage) {
         console.log(etage);
-        const temp: Array<any> = [];
-        for (let i = 0; i < etage.nbCouloirs; i++) {
-          const obj = {
-            'designation': '',
-            'sexe': '',
-            'etageId': this.allEtages[index].id,
-            'batimentId': this.batID,
-            'debut': index > 0 ? parseInt(this.allCouloirs[index - 1][this.allEtages[index - 1].nbCouloirs - 1].fin, 10) + 1 : 0,
-            'fin': 0,
-            'done': false,
-          };
-          obj.fin = obj.debut + 1 ;
-          temp.push(obj);
-        }
-        this.allCouloirs[index] = temp;
-        this.showCou = true;
-      const nobj2: Array<any> = [];
-      this.allChambres.push(nobj2);
+        this.http.post(this.api + 'etages', etage).subscribe(
+          data => {
+            this.allEtages[index] = data;
+            const temp: Array<any> = [];
+            for (let i = 0; i < etage.nbCouloirs; i++) {
+              const obj = {
+                'designation': '',
+                'sexe': '',
+                'etageId': this.allEtages[index].id,
+                'batimentId': this.batID,
+                'debut': index > 0 ? parseInt(this.allCouloirs[index - 1][this.allEtages[index - 1].nbCouloirs - 1].fin, 10) + 1 : 0,
+                'fin': 0,
+                'done': false,
+              };
+              obj.fin = obj.debut + 1 ;
+              temp.push(obj);
+            }
+            this.allCouloirs[index] = temp;
+            this.showCou = true;
+            const nobj2: Array<any> = [];
+            this.allChambres.push(nobj2);
+          },
+          error => console.error(error)
+        );
+
     }
     public parse(val) {
       return parseInt(val, 10);
     }
     public ajoutCouloir(index) {
-      console.log(this.allCouloirs[index]);
       const couloirs = this.allCouloirs[index];
       const ex = index !== 0 ? this.parse(this.allCouloirs[index - 1][this.allCouloirs[index - 1].length - 1].fin) : 0 ;
       let all =  index === 0 ? 0 : ex + 1;
-      console.log(this.batiment);
       for (let i = 0; i < couloirs.length ; i++ ) {
-            // TODO Requete HTTP
+        this.http.post(this.api + 'couloirs', couloirs[i]).subscribe(
+          data => {
+            const x:any = data ;
             let cid = '';
-            cid = 'ok' ;
+            cid = x.id ;
             const temp = [];
-            // const deb = i === 0 ? 0 : couloirs[i - 1].fin;
             let deb ;
             if (index === 0 && i === 0) deb = 0 ;
             else if ( i === 0 && index !== 0) deb = ex + 1 ;
-            else deb = this.parse(couloirs[i - 1].fin) +1 ;
+            else deb = this.parse(couloirs[i - 1].fin) + 1 ;
             const nbCham = this.parse(couloirs[i].fin) - this.parse(deb) + 1 ;
             for (let j = 0; j < nbCham; j++ ) {
               const obj = {
                 'code': all + '' + couloirs[i].sexe + '' + index + '' + this.batimentForm.value.code ,
                 'numero': all,
                 'nbpositions': 4,
+                'nbposrest' : 4,
                 'reserve': false,
                 'batimentId': this.batID,
                 'etageId': couloirs[i].etageId,
@@ -130,9 +150,27 @@ export class AjoutBatComponent implements OnInit {
               temp.push(obj);
             }
             this.allChambres[index][i] = temp ;
+          },
+          error2 => console.error(error2)
+        ) ;
       }
-      console.log(this.allChambres);
-      console.log(this.allCouloirs);
-      console.log(this.allEtages);
+    }
+    public ajoutChambre(){
+          const total = this.parse(this.allChambres[this.allEtages.length - 1][this.allCouloirs.length - 1].numero)
+          let nb = 0;
+        for(let i = 0; i < this.allEtages.length ; ++i){
+          for(let j = 0; j < this.allCouloirs.length; ++j) {
+            this.allChambres[i][j].nbposrest = this.allChambres[i][j].nbpositions ;
+            this.http.post(this.api + 'chambres', this.allChambres[i][j]).subscribe(
+              data => {
+                ++nb;
+                if(nb === total){
+                  this.router.navigate(['dashboard']) ;
+                }
+              },
+              error2 => console.error(error2)
+            ) ;
+          }
+        }
     }
 }

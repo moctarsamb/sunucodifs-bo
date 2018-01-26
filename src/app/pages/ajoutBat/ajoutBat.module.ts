@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatStepperModule} from '@angular/material/stepper';
 import { AjoutBatComponent } from './ajoutBat.component';
 import { routing } from './ajoutBat.routing';
 import {HttpClientModule} from '@angular/common/http';
@@ -16,7 +17,7 @@ import {HttpClientModule} from '@angular/common/http';
     imports: [
         CommonModule,
         ReactiveFormsModule,
-      FormsModule,
+        FormsModule,
         HttpClientModule,
         MatFormFieldModule,
         MatInputModule,
@@ -25,12 +26,14 @@ import {HttpClientModule} from '@angular/common/http';
         MatIconModule,
         MatGridListModule,
         MatSelectModule,
-      MatDividerModule,
+        MatDividerModule,
+        MatStepperModule,
         routing
     ],
     exports: [MatCardModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatGridListModule,
       MatSelectModule,
-      MatDividerModule],
+      MatDividerModule,
+      MatStepperModule],
     declarations: [AjoutBatComponent],
     providers: [],
 })
