@@ -1,0 +1,54 @@
+
+<mat-card>
+  <form [formGroup]="departementForm" >
+    <mat-form-field>
+      <input type="text" placeholder="Nom Departement" formControlName="nom" matInput>
+    </mat-form-field>
+    <button mat-button type="submit" (click)="createDep()" > Ajouter Departement </button>
+  </form>
+  <table datatable [dtTrigger]="dtTrigger" class="row-border hover">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let person of departements; index as i">
+      <td>{{ i }}</td>
+      <td>{{ person.nom }}</td>
+    </tr>
+    </tbody>
+  </table>
+</mat-card>
+
+<mat-card>
+  <form [formGroup]="niveauForm" >
+    <mat-form-field>
+      <input type="text" placeholder="Intitule Departement" formControlName="intitule" matInput>
+    </mat-form-field>
+    <mat-form-field>
+    <mat-select formControlName="departementId" >
+      <div *ngFor="let dep of departements" >
+        <mat-option [value]="dep.id"  > {{dep.nom}} </mat-option>
+      </div>
+    </mat-select>
+    </mat-form-field>
+    <button mat-button type="submit" (click)="createNiv()" > Ajouter Niveau</button>
+  </form>
+  <table datatable [dtTrigger]="dtTrigger2" class="row-border hover">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let person of niveau; index as i">
+      <td>{{ i }}</td>
+      <td>{{ person.intitule }}</td>
+      <td>{{ person.departementId }}</td>
+    </tr>
+    </tbody>
+  </table>
+</mat-card>

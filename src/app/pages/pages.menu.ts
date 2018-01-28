@@ -15,6 +15,28 @@ export const PAGES_MENU = [
         },
       },
       {
+        path: 'ajoutBat',
+         title: 'Options',
+            data: {
+              menu: {
+                title: 'Options',
+                icon: 'ion-ios-home',
+                selected: false,
+                order: 0,
+              }
+            },
+        children: [
+          {
+            path: 'options',
+            data: {
+              menu: {
+                title: 'Ajouter',
+                icon: 'ion-ios-add',
+              }
+            }
+          },]
+      },
+      {
         path: '',
         data: {
           menu: {

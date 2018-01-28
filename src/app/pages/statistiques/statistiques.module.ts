@@ -8,8 +8,8 @@ import {MatIconModule} from '@angular/material';
 import {MatInputModule} from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 
-import { StatistiquesComponent } from './Statistiques.component';
-import { routing } from './Statistiques.routing';
+import { StatistiquesComponent } from './statistiques.component';
+import { routing } from './statistiques.routing';
 import { CommonModule } from '@angular/common';
 
 @NgModule({

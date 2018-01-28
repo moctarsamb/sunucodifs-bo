@@ -140,7 +140,6 @@ export class AjoutBatComponent implements OnInit {
                 'code': all + '' + couloirs[i].sexe + '' + index + '' + this.batimentForm.value.code ,
                 'numero': all,
                 'nbpositions': 4,
-                'nbposrest' : 4,
                 'reserve': false,
                 'batimentId': this.batID,
                 'etageId': couloirs[i].etageId,

@@ -11,8 +11,10 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatStepperModule} from '@angular/material/stepper';
 import { AjoutBatComponent } from './ajoutBat.component';
+import { OptionComponent } from './option.component';
 import { routing } from './ajoutBat.routing';
 import {HttpClientModule} from '@angular/common/http';
+import { DataTablesModule } from 'angular-datatables';
 @NgModule({
     imports: [
         CommonModule,
@@ -28,13 +30,15 @@ import {HttpClientModule} from '@angular/common/http';
         MatSelectModule,
         MatDividerModule,
         MatStepperModule,
+        DataTablesModule,
         routing
     ],
     exports: [MatCardModule, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatGridListModule,
       MatSelectModule,
       MatDividerModule,
       MatStepperModule],
-    declarations: [AjoutBatComponent],
+    declarations: [AjoutBatComponent,
+    OptionComponent],
     providers: [],
 })
 export class AjoutTransModule { }
