@@ -126,7 +126,7 @@ export class AjoutBatComponent implements OnInit {
       for (let i = 0; i < couloirs.length ; i++ ) {
         this.http.post(this.api + 'couloirs', couloirs[i]).subscribe(
           data => {
-            const x:any = data ;
+            const x: any = data ;
             let cid = '';
             cid = x.id ;
             const temp = [];
@@ -143,7 +143,8 @@ export class AjoutBatComponent implements OnInit {
                 'reserve': false,
                 'batimentId': this.batID,
                 'etageId': couloirs[i].etageId,
-                'couloirId': cid
+                'couloirId': cid,
+                'nbposres': 0
               };
               ++all;
               temp.push(obj);
@@ -155,21 +156,26 @@ export class AjoutBatComponent implements OnInit {
       }
     }
     public ajoutChambre(){
-          const total = this.parse(this.allChambres[this.allEtages.length - 1][this.allCouloirs.length - 1].numero)
-          let nb = 0;
-        for(let i = 0; i < this.allEtages.length ; ++i){
-          for(let j = 0; j < this.allCouloirs.length; ++j) {
-            this.allChambres[i][j].nbposrest = this.allChambres[i][j].nbpositions ;
-            this.http.post(this.api + 'chambres', this.allChambres[i][j]).subscribe(
+        const etlen = this.allEtages.length - 1
+        const cllen = this.allCouloirs.length - 1
+        // const etlen = 0
+      // const total = this.parse(this.allChambres[etlen][cllen][this.allChambres[etlen][cllen].length - 1].numero);
+      console.log(this.allEtages);
+      console.log(this.allCouloirs);
+      let nb = 0;
+      console.log(this.allChambres[0][0][0]);
+      for (let i = 0; i < this.allEtages.length ; ++i) {
+          for (let j = 0; j < this.allChambres[i].length; ++j) {
+          for (let k = 0; k < this.allChambres[i][j].length; ++k) {
+            this.http.post(this.api + 'chambres', this.allChambres[i][j][k]).subscribe(
               data => {
                 ++nb;
-                if(nb === total){
-                  this.router.navigate(['dashboard']) ;
-                }
+                // if(nb === total) console.log('ss');
               },
               error2 => console.error(error2)
             ) ;
-          }
+          }}
         }
+
     }
 }
