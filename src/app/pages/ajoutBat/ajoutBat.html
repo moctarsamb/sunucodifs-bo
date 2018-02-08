@@ -1,0 +1,95 @@
+<br>
+<mat-horizontal-stepper [linear]="notlinear">
+  <mat-step>
+    <ng-template matStepLabel>Batiment</ng-template>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title class="centerme" >Ajouter Un Batiment</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="container">
+        <form [formGroup]="batimentForm" >
+          <mat-form-field class="large">
+            <input type="text" matInput placeholder="Entrez le nom du batiment" formControlName="nomBatiment" >
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Entrez le code" formControlName="code" >
+          </mat-form-field>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Entrez le nombre d'etages" formControlName="nbEtages" >
+          </mat-form-field>
+          <button mat-button class="centerme" type="submit" matStepperNext (click)="ajoutBat()" disabled="{{!batimentForm.valid}}" > Envoyer</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Etages</ng-template>
+    <mat-card *ngIf="batDone">
+      <mat-card-header>
+        <mat-card-title> Ajouter les etages </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngFor="let etage of allEtages; index as i" >
+          <h5> Etage {{i}} <i class="material-icons">check_circle</i> </h5>
+          <mat-form-field class="large">
+            <input type="text" #mform name="nbCou" matInput placeholder="Entrer le nombre de couloirs" [(ngModel)]="etage.nbCouloirs" required>
+          </mat-form-field>
+          <button mat-button (click)="ajoutEtage(i,etage)" type="submit" [disabled]="mform.value<=0" > Creer</button>
+          <form>
+            <div *ngFor="let col of allCouloirs[i]; index as j">
+              <h6>Couloir {{j+1}}</h6>
+              <mat-form-field class="">
+                <input type="text" name="nomC" matInput placeholder="Entrer le nom de couloir" [(ngModel)]="col.designation" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-select [(ngModel)]="col.sexe" name="sexeC" placeholder="Choisissez le Sexe" required>
+                  <mat-option value="M"> M </mat-option>
+                  <mat-option value="F"> F </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <input name="debC1"  placeholder="Debut Couloir" matInput *ngIf="i>0 && j==0" [value]="parse(this.allCouloirs[i-1][this.allEtages[i-1].nbCouloirs - 1].fin) + 1" [(ngModel)]="col.debut" disabled >
+                <input name="debC2"  placeholder="Debut Couloir" matInput *ngIf="j>0" [value]="parse(this.allCouloirs[i][j-1].fin) + 1" [(ngModel)]="col.debut" disabled >
+                <input name="debC3"  type="text" matInput placeholder="Debut Couloir"  *ngIf="i==0 && j==0" value="0" disabled [(ngModel)]="col.debut">
+              </mat-form-field>
+              <mat-form-field>
+                <input name="finC" required type="text" matInput placeholder="Fin de Couloir" [(ngModel)]="col.fin" >
+              </mat-form-field>
+            </div>
+            <button mat-button *ngIf="showCou" (click)="ajoutCouloir(i)" >Valider</button>
+          </form>
+          <br>
+          <mat-divider ></mat-divider>
+          <br>
+          <br>
+        </div>
+      </mat-card-content>
+      <button mat-button matStepperNext class="right" > Valider Tout </button>
+    </mat-card>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Chambres</ng-template>
+    <mat-card>
+      <div *ngFor="let etage of allEtages; index as i" >
+        <h3>Etage {{i}} </h3>
+        <mat-divider></mat-divider>
+        <div *ngFor="let col of allCouloirs[i]; index as j;" >
+         <h5>Couloir {{j}}</h5>
+          <mat-divider></mat-divider>
+          <div *ngFor="let room of allChambres[i][j]; index as x">
+            Chambre {{room.numero}}
+            <mat-form-field>
+              <mat-select placeholder="Nombre de positions" [value]="room.nbpositions" [(ngModel)]="room.nbpositions" >
+                <mat-option value="1" > 1 </mat-option>
+                <mat-option value="2" > 2 </mat-option>
+                <mat-option value="3" > 3 </mat-option>
+                <mat-option value="4" > 4 </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+        <button mat-button class="right" (click)="ajoutChambre()" > Enregistrer TOUT</button>
+    </mat-card>
+  </mat-step>
+</mat-horizontal-stepper>

@@ -1,0 +1,53 @@
+  <mat-input-container floatPlaceholder="never">
+      <input matInput #filter placeholder="Trier par nom">
+    </mat-input-container>
+
+    <br/>
+
+    <mat-card>
+      <mat-card-header>
+         
+          
+              <mat-toolbar color="primary" style="margin-top: 20px;margin-bottom: 20px;">
+                  <span class="spacer"></span>
+                  <h2 style="margin-left:300px;">Liste des batiments</h2>
+                  <span class="spacer"></span>
+                  </mat-toolbar>
+        
+          
+        </mat-card-header>
+        <mat-card-content>
+        <div *ngIf="!ready" align="center">
+            <mat-spinner class="spinner" align="center"></mat-spinner>
+        </div>
+    <mat-table *ngIf="ready" #table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="nomBatiment">
+        <mat-header-cell *matHeaderCellDef> Nom du Batiment </mat-header-cell>
+        <mat-cell *matCellDef="let row" > 
+              <span>{{row.nomBatiment}}</span>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="nbEtages">
+          <mat-header-cell *matHeaderCellDef> Nombre etages </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+             
+                  <span >{{row.nbEtages}}</span>
+               
+          </mat-cell>
+        </ng-container>
+     
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    </mat-table>
+    <mat-card-actions>
+    <mat-paginator [length]="length"
+                  [pageSize]="pageSize"
+                  [pageSizeOptions]="pageSizeOptions"
+                  (page)="onPageEvent($event)">
+    </mat-paginator>
+  </mat-card-actions>
+  </mat-card-content>
+  </mat-card>
