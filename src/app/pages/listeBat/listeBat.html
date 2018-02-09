@@ -1,9 +1,14 @@
   <mat-input-container floatPlaceholder="never">
+<<<<<<< HEAD
       <input matInput #filter placeholder="Trier par nom">
+=======
+      <input matInput #filter placeholder="Trier par Organisation">
+>>>>>>> 544b074fd0f29c8c9196656021bad6be85301320
     </mat-input-container>
 
     <br/>
 
+<<<<<<< HEAD
     <mat-card>
       <mat-card-header>
          
@@ -51,3 +56,31 @@
   </mat-card-actions>
   </mat-card-content>
   </mat-card>
+=======
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container cdkColumnDef="userId">
+      <mat-header-cell *cdkHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="nom">
+      <mat-header-cell *cdkHeaderCellDef> Nom COMPLET </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.prenom}} {{row.nom}}  </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="orga">
+      <mat-header-cell *cdkHeaderCellDef> Organisation </mat-header-cell>
+      <mat-cell *cdkCellDef="let row"> {{row.orga}} </mat-cell>
+    </ng-container>
+
+    <ng-container cdkColumnDef="mail">
+      <mat-header-cell *cdkHeaderCellDef> E-Mail </mat-header-cell>
+      <mat-cell *cdkCellDef="let row" > {{row.mail}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *cdkHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *cdkRowDef="let row; columns: displayedColumns;"></mat-row>
+
+  </mat-table>
+>>>>>>> 544b074fd0f29c8c9196656021bad6be85301320
