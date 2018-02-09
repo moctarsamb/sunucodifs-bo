@@ -37,12 +37,12 @@ export class AjoutBatComponent implements OnInit {
     public allChambres: Array<any> = [];
     public batiment: Batiment = {
       id : '' ,
-      nom: '',
+      nomBatiment: '',
       code: '',
       nbEtages : '',
     };
     public batimentForm = new FormGroup({
-        'nomBatiment' : new FormControl(this.batiment.nom, [
+        'nomBatiment' : new FormControl(this.batiment.nomBatiment, [
           Validators.required
         ]),
       'code': new FormControl(this.batiment.code, [
